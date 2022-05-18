@@ -16,6 +16,7 @@
 int main(int argc, char **argv)
 {
     char *cmd;
+    int int_mode;
 
     int_mode = isatty(STDIN_FILENO);
 
@@ -24,7 +25,7 @@ int main(int argc, char **argv)
         // fprintf(stderr, "$ ");
         write(STDOUT_FILENO, "#cisfun$ ", 13);
 
-        cmd = read_com;
+        cmd = read_com();
 
         if (!cmd)
             perror("Error:");
