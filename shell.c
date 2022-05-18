@@ -63,6 +63,19 @@ char *read_com(void)
         }
         strcpy(ptr+ptrlen, buf);
 
+        if(buf[buflen-1] == '\n')
+        {
+            if(buflen == 1 || buf[buflen-2] != '\\')
+            {
+                return ptr;
+            }
+
+            ptr[ptrlen+buflen-2] = '\0';
+            buflen -= 2;
+            // print_prompt2();
+            fprintf(stderr, "> ");
+        }
+
         ptrlen += buflen;
     }
 
@@ -84,8 +97,8 @@ int main(int argc, char **argv)
 
     
 
-    while(int_mode){
-        int_mode = isatty(STDIN_FILENO);
+    while(1){
+        // int_mode = isatty(STDIN_FILENO);
         fprintf(stderr, "$ ");
 
         // if (int_mode == 1)
