@@ -96,7 +96,7 @@ int main(int argc, char **argv)
         cmd = read_com();
 
         if (!cmd)
-            perror("Error:");
+            // perror("Error:");
             exit(EXIT_SUCCESS);
         
         if (cmd[0] == '\0' || strcmp(cmd, "\n") == 0)
