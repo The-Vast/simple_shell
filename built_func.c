@@ -9,7 +9,7 @@ int run_built_in(char **args)
     int i = 0;
     b_ins binsarr[] = {
         {"env", _bin_env},
-        {"exit", _bin_exit},
+        {"exit", _exit_bin},
         {"cd", _bin_cd},
         {NULL, NULL}};
 
@@ -40,7 +40,7 @@ int _bin_env(__attribute__((unused)) char **args)
     return (2);
 }
 /**
- * _bin_exit - exit shell
+ * _exit_bin - exit shell
  * @args: argument array
  * Return: _SHELL_END_ code on success
  */
