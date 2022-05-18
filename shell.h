@@ -50,7 +50,7 @@ char *_stralloc(int count, ...);
 int _tokount(char *str, char *delim);
 int run_built_in(char **args);
 /*functions*/
-int _bin_exit(char **);
+int _exit_bin(char **);
 int _bin_cd(char **);
 int _bin_env(char **);
 
