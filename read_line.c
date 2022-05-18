@@ -5,7 +5,7 @@
  * Return: the command typed
  */
 
-char read_com(void)
+char *read_com(void)
 {
     char *line = NULL;
     ssize_t bufsize = 0;
