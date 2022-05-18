@@ -12,6 +12,6 @@ int main(void)
 		start = _unix_shell();
 		if (start == 3)
 			start = 0;
-	} while (stat);
+	} while (start);
 	return (0);
 }
