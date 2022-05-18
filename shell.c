@@ -80,7 +80,7 @@ char *read_com(void)
 int main(int argc, char **argv)
 {
     char *cmd;
-    // int int_mode;
+    int int_mode;
 
     
 
