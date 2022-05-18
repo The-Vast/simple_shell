@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 
     
 
-    while(1){
+    do{
         // int_mode = isatty(STDIN_FILENO);
         fprintf(stderr, "$ ");
 
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
         // write(STDOUT_FILENO, "cmd\n", 13);
         free(cmd);
 
-    }
+    }while(1)
 
     exit(EXIT_SUCCESS);
 }
