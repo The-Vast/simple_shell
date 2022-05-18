@@ -6,6 +6,31 @@
 #include "shell.h"
 
 /**
+ * read_com - reads command from stdin
+ * Return: the command typed
+ */
+
+char *read_com(void)
+{
+    char *line = NULL;
+    ssize_t bufsize = 0;
+
+    if (getline(&line, &bufsize, stdin) == -1)
+    {
+        if (feof(stdin))
+        {
+            exit(EXIT_SUCCESS);
+        } else
+        {
+            perror("readline");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    return line;
+}
+
+/**
  * main - main function for the shell
  * @argc: number of arguments passed to main
  * @argv: array of arguments passed to main
@@ -31,7 +56,7 @@ int main(int argc, char **argv)
             perror("Error:");
             exit(EXIT_SUCCESS);
         
-        if (cmd[0] == EOF || cmd == "\n")
+        if (cmd[0] == EOF || cmd[0] == "\n")
         {
             free(cmd);
             continue;
