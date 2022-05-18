@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     do{
         
         // fprintf(stderr, "$ ");
-        write(STDOUT_FILENO, "$ ", 13);
+        write(STDOUT_FILENO, "#cisfun$ ", 13);
 
         cmd = read_com;
 
@@ -43,6 +43,7 @@ int main(int argc, char **argv)
         }
 
         printf("%s\n", cmd);
+        // write(STDOUT_FILENO, "cmd\n", 13);
         free(cmd);
 
     }while(int_mode);
