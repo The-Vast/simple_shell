@@ -86,12 +86,12 @@ int main(int argc, char **argv)
 
     do{
         int_mode = isatty(STDIN_FILENO);
-        // fprintf(stderr, "$ ");
+        fprintf(stderr, "$ ");
 
-        if (int_mode == 1)
-        {
-            write(STDOUT_FILENO, "#cisfun$ ", 13);
-        }
+        // if (int_mode == 1)
+        // {
+        //     write(STDOUT_FILENO, "#cisfun$ ", 13);
+        // }
 
         cmd = read_com();
 
