@@ -12,22 +12,61 @@
 
 char *read_com(void)
 {
-    char *line = NULL;
-    ssize_t bufsize = 0;
+    // char *line = NULL;
+    // ssize_t bufsize = 0;
 
-    if (getline(&line, &bufsize, stdin) == -1)
+    // if (getline(&line, &bufsize, stdin) == -1)
+    // {
+    //     if (feof(stdin))
+    //     {
+    //         exit(EXIT_SUCCESS);
+    //     } else
+    //     {
+    //         perror("readline");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
+
+    // return line;
+
+    char buf[1024];
+    char *ptr = NULL;
+    char ptrlen = 0;
+
+    while(fgets(buf, 1024, stdin))
     {
-        if (feof(stdin))
+        int buflen = strlen(buf);
+
+        if(!ptr)
         {
-            exit(EXIT_SUCCESS);
-        } else
-        {
-            perror("readline");
-            exit(EXIT_FAILURE);
+            ptr = malloc(buflen+1);
         }
+        else
+        {
+            char *ptr2 = realloc(ptr, ptrlen+buflen+1);
+
+            if(ptr2)
+            {
+                ptr = ptr2;
+            }
+            else
+            {
+                free(ptr);
+                ptr = NULL;
+            }
+        }
+        if(!ptr)
+        {
+            fprintf(stderr, "error: failed to alloc buffer: %s\n", 
+                    strerror(errno));
+            return NULL;
+        }
+        strcpy(ptr+ptrlen, buf);
+
+        ptrlen += buflen;
     }
 
-    return line;
+    return ptr;
 }
 
 /**
@@ -41,14 +80,18 @@ char *read_com(void)
 int main(int argc, char **argv)
 {
     char *cmd;
-    int int_mode;
+    // int int_mode;
 
-    int_mode = isatty(STDIN_FILENO);
+    
 
     do{
-        
+        int_mode = isatty(STDIN_FILENO);
         // fprintf(stderr, "$ ");
-        write(STDOUT_FILENO, "#cisfun$ ", 13);
+
+        if (int_mode == 1)
+        {
+            write(STDOUT_FILENO, "#cisfun$ ", 13);
+        }
 
         cmd = read_com();
 
@@ -68,6 +111,14 @@ int main(int argc, char **argv)
             break;
         }
 
+        // token = strtok(buffer, delimiter);
+        // while (token != NULL)
+        // {
+        //     toks[counter] = strdup(token);
+        //     token = strtok(NULL, delimiter);
+        //     Counter++;
+        // }
+        // toks[counter] = token;
         printf("%s\n", cmd);
         // write(STDOUT_FILENO, "cmd\n", 13);
         free(cmd);
