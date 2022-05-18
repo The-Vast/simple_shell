@@ -56,7 +56,7 @@ int main(int argc, char **argv)
             perror("Error:");
             exit(EXIT_SUCCESS);
         
-        if (cmd[0] == EOF || cmd[0] == "\n")
+        if (cmd[0] == '\0' || strcmp(cmd, "\n") == 0)
         {
             free(cmd);
             continue;
