@@ -37,7 +37,7 @@ int _unix_shell(void);
 
 void exec_process(char *program, char **e_args);
 
-char **tokeniser(char **buff, char *pattern);
+char **tokeniser(char **buffer, char *pattern);
 char *get_path_args(char *program);
 char *generate_prompt_line(char *custom);
 
