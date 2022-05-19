@@ -19,7 +19,7 @@ unsigned int check_same(char c, const char *str)
 }
 
 /**
- * new_strtok - custom strtok
+ * new_strtokn - custom strtok
  * @str: string to tokenize
  * @delim: delimiter to tokenize against
  *
