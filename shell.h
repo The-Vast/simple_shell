@@ -1,82 +1,80 @@
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
-/*Standard Libs*/
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/wait.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <stdarg.h>
-#include <string.h>
-/*System environment*/
-extern char **environ;
+#include <sys/wait.h>
+#include <limits.h>
+#include <signal.h>
 
-/*BUFF SIZE*/
-#define _SHIA_LA_BEAUF_ 1024
-
-/*SHELL INSTANCE STAGES*/
-#define _ERR_ 0
-#define _NORMAL_ 1
-#define _SKIP_ 2
-#define _SHELL_END_ 3
-#define _BUILT_IN_ 4
-#define _PATH_NREADY_ 5
-#define _PATH_READY_ 6
-
-/*strings stuff*/
-int _strlen(char *);
-char *_strcpy(char *, char *);
-int _strcmp(char *, char *);
-char *_strstr(char *, char *);
-char *_strcat(char *, char *);
-
-int _unix_shell(void);
-
-void exec_process(char *program, char **e_args);
-
-char **tokeniser(char **buffer, char *pattern);
-char *get_path_args(char *program);
-char *generate_prompt_line(char *custom);
-
-char *_find_env_get_value(char *key);
-char *_find_x_path(char **env_paths, char *program);
-
-unsigned int _is_arg_run_ready(char *arg);
-char *_stralloc(int count, ...);
-
-int _tokount(char *str, char *delim);
-int run_built_in(char **args);
-/*functions*/
-int _exit_bin(char **);
-int _bin_cd(char **);
-int _bin_env(char **);
-
-/*struct*/
 /**
- * struct built_ins - command name and function to handle built-ins
- * @command: command name
- * @func: pointer to function
- *
+ * struct variables - variables
+ * @av: command line arguments
+ * @buffer: buffer of command
+ * @env: environment variables
+ * @count: count of commands entered
+ * @argv: arguments at opening of shell
+ * @status: exit status
+ * @commands: commands to execute
  */
-typedef struct built_ins
+typedef struct variables
 {
-	char *command;
-	int (*func)(char **);
-} b_ins;
-/*END OF BUILT-IN STUFF*/
+	char **av;
+	char *buffer;
+	char **env;
+	size_t count;
+	char **argv;
+	int status;
+	char **commands;
+} vars_t;
 
-/*COLOR CODES*/
-#define _COLOR_RED_ "\x1B[31m"
-#define _COLOR_GREEN_ "\x1B[32m"
-#define _COLOR_YELLOW_ "\x1B[33m"
-#define _COLOR_BLUE_ "\x1B[34m"
-#define _COLOR_MAGENTA_ "\x1B[35m"
-#define _COLOR_CYAN_ "\x1B[36m"
-#define _BOLD_ "\x1B[1m"
-#define _CLEAR_ "\x1B[0m"
-#define UNUSED __attribute__((unused))
+/**
+ * struct builtins - struct for the builtin functions
+ * @name: name of builtin command
+ * @f: function for corresponding builtin
+ */
+typedef struct builtins
+{
+	char *name;
+	void (*f)(vars_t *);
+} builtins_t;
+
+char **make_env(char **env);
+void free_env(char **env);
+
+ssize_t _put(char *str);
+char *_strdup(char *strtodup);
+int _strcmpr(char *strcmp1, char *strcmp2);
+char *_strcat(char *strc1, char *strc2);
+unsigned int _strlen(char *str);
+
+char **str_exec(char *buffer, char *delimiter);
+char **_realoc(char **ptr, size_t *size);
+char *new_strtokn(char *str, const char *delim);
+
+void (*check_for_builtins(vars_t *var))(vars_t *var);
+void new_exit(vars_t *var);
+void _env(vars_t *var);
+void new_setenv(vars_t *var);
+void new_unsetenv(vars_t *var);
+
+void add_key(vars_t *var);
+char **find_key(char **env, char *key);
+char *add_value(char *key, char *value);
+int _atoi(char *str);
+
+void check_for_path(vars_t *vars);
+int path_exec(char *command, vars_t *vars);
+char *find_path(char **env);
+int execute_cwd(vars_t *vars);
+int check_for_dir(char *str);
+
+void print_error(vars_t *var, char *msg);
+void _put2(char *str);
+char *_uitoa(unsigned int count);
 
 #endif

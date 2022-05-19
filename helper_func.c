@@ -1,117 +1,66 @@
 #include "shell.h"
-
 /**
- * _tokount - counts number of tokens
- * @str: input string
- * @delim: delimiter string
- * Return: delimiter count
+ * check_same - checks if a character matches any in a string
+ * @c: character to check
+ * @str: string to check
+ *
+ * Return: 1 if same, 0 if not
  */
-int _tokount(char *str, char *delim)
+unsigned int check_same(char c, const char *str)
 {
-	int i = 0, j = 0;
-	int k = 0;
+	unsigned int i;
 
-	while (delim[i])
+	for (i = 0; str[i] != '\0'; i++)
 	{
-		while (str[j])
-			if (str[j++] == delim[i] && str[j] != delim[i])
-				k++;
-		j = 0;
-		i++;
+		if (c == str[i])
+			return (1);
 	}
-	return (k);
+	return (0);
 }
+
 /**
- * _is_arg_run_ready - tests for file access
- * @arg: path to check
- * Return: 1 on success, 0 on failure
+ * new_strtok - custom strtok
+ * @str: string to tokenize
+ * @delim: delimiter to tokenize against
+ *
+ * Return: pointer to the next token or NULL
  */
-unsigned int _is_arg_run_ready(char *arg)
+char *new_strtokn(char *str, const char *delim)
 {
-	if (access(arg, X_OK) == -1)
-		return (0);
-	else
-		return (1);
-}
-/**
- * _stralloc - concatenate count strings
- * @count: string count
- * Return: concatenated strings
- */
-char *_stralloc(int count, ...)
-{
-	va_list valist;
-	char *prg_arg;
-	char *prg_ptr;
-	char *prg_ret;
-	int sLen;
-	int aLen;
+	static char *token_start;
+	static char *next_token;
+	unsigned int i;
 
-	va_start(valist, count);
-
-	prg_arg = va_arg(valist, char *), count--;
-	aLen = _strlen(prg_arg);
-
-	prg_ret = malloc(sizeof(char) * aLen + 1);
-	if (prg_ret == NULL)
-		perror("big segfult: "), exit(EXIT_FAILURE);
-
-	_strcpy(prg_ret, prg_arg);
-	while (count != 0)
-	{
-		prg_arg = va_arg(valist, char *), count--;
-		sLen = _strlen(prg_ret), aLen = _strlen(prg_arg);
-
-		prg_ptr = malloc(sizeof(char) * (sLen + aLen) + 1);
-		if (prg_ptr == NULL)
-			perror("gros gros segfult: "), exit(EXIT_FAILURE);
-
-		if (prg_ret != NULL)
-			_strcpy(prg_ptr, prg_ret), free(prg_ret);
-		_strcat(prg_ptr, prg_arg), prg_ret = prg_ptr;
-	}
-
-	va_end(valist);
-	return (prg_ret);
-}
-/**
- * _find_env_get_value - get value of key
- * @key: key is key
- * Return: pointer to first letter env value
- */
-char *_find_env_get_value(char *key)
-{
-	int i = 0;
-	char *prg;
-
-	while (_strstr(environ[i], key) == NULL && environ[i] != NULL)
-		i++;
-
-	if (environ[i] == NULL)
+	if (str != NULL)
+		next_token = str;
+	token_start = next_token;
+	if (token_start == NULL)
 		return (NULL);
-	prg = _strstr(environ[i], "="), prg++;
-	return (prg);
-}
-/**
- * _find_x_path - find path of program
- * @env_paths: path token array
- * @program: program string
- * Return: absolute path of program
- */
-char *_find_x_path(char **env_paths, char *program)
-{
-	int i = 1;
-	char *prg;
-
-	prg = _stralloc(3, env_paths[0], "/", program);
-	while (access(prg, X_OK) == -1 && env_paths[i] != NULL)
+	for (i = 0; next_token[i] != '\0'; i++)
 	{
-		free(prg);
-		prg = _stralloc(3, env_paths[i], "/", program);
-		i++;
+		if (check_same(next_token[i], delim) == 0)
+			break;
 	}
-	if (env_paths[i] == NULL)
+	if (next_token[i] == '\0' || next_token[i] == '#')
+	{
+		next_token = NULL;
 		return (NULL);
+	}
+	token_start = next_token + i;
+	next_token = token_start;
+	for (i = 0; next_token[i] != '\0'; i++)
+	{
+		if (check_same(next_token[i], delim) == 1)
+			break;
+	}
+	if (next_token[i] == '\0')
+		next_token = NULL;
 	else
-		return (prg);
+	{
+		next_token[i] = '\0';
+		next_token = next_token + i + 1;
+		if (*next_token == '\0')
+			next_token = NULL;
+	}
+	return (token_start);
 }

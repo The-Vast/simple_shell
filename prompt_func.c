@@ -1,46 +1,75 @@
 #include "shell.h"
 
 /**
-* get_path_args - get absolute path for program name
-* @program: program token
-* Return: absolute path
-*/
-char *get_path_args(char *program)
+ * print_error - prints error messages to standard error
+ * @var: pointer to struct of variables
+ * @msg: message to print
+ *
+ * Return: void
+ */
+void print_error(vars_t *var, char *msg)
 {
-	char *prg;
-	char *prg_env;
-	char **prg_args;
+	char *count;
 
-	prg = _find_env_get_value("PATH");
-	/* printf("%s\n", prg); */
-	prg_env = _stralloc(1, prg);
-	prg_args = tokeniser(&prg_env, ":");
-	/* printf("[%s]\n", prg_args[1]); */
-	prg = _find_x_path(prg_args, program);
-	/* printf("prg[%s]a1[]a2[]\n", prg); */
-	free(prg_env);
-	free(prg_args);
-	return (prg);
+	_put2(var->argv[0]);
+	_put2(": ");
+	count = _uitoa(var->count);
+	_put2(count);
+	free(count);
+	_put2(": ");
+	_put2(var->av[0]);
+	if (msg)
+	{
+		_put2(msg);
+	}
+	else
+		perror("");
 }
+
 /**
-* generate_prompt_line - display prompt
-* @custom: custom prompt
-* Return: prompt string in color
-*/
-char *generate_prompt_line(char *custom)
+ * _put2 - prints a string to standard error
+ * @str: string to print
+ *
+ * Return: void
+ */
+void _put2(char *str)
 {
-	char buffer[1024];
+	ssize_t fig, len;
 
-	if (custom == NULL)
-		custom = "";
+	fig = _strlen(str);
+	len = write(STDERR_FILENO, str, fig);
+	if (len != fig)
+	{
+		perror("Fatal Error");
+		exit(1);
+	}
+}
 
-	return (_stralloc(21,
-				_BOLD_, _COLOR_MAGENTA_, custom, _CLEAR_,
-				" | ",
-				_COLOR_MAGENTA_, "Raid55", _CLEAR_,
-				_BOLD_, _COLOR_GREEN_, "@", _CLEAR_,
-				_BOLD_, _COLOR_YELLOW_, _find_env_get_value("USER"), _CLEAR_,
-				":",
-				_COLOR_CYAN_, getcwd(buffer, 1024), _CLEAR_,
-				"$ "));
+/**
+ * _uitoa - converts an unsigned int to a string
+ * @count: unsigned int to convert
+ *
+ * Return: pointer to the converted string
+ */
+char *_uitoa(unsigned int count)
+{
+	char *numstr;
+	unsigned int tmp, digits;
+
+	tmp = count;
+	for (digits = 0; tmp != 0; digits++)
+		tmp /= 10;
+	numstr = malloc(sizeof(char) * (digits + 1));
+	if (numstr == NULL)
+	{
+		perror("Fatal Error1");
+		exit(127);
+	}
+	numstr[digits] = '\0';
+	for (--digits; count; --digits)
+	{
+		numstr[digits] = (count % 10) + '0';
+		count /= 10;
+	}
+	return (numstr);
 }

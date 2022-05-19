@@ -1,51 +1,38 @@
 #include "shell.h"
+
 /**
- * tokeniser - tokenizes a string
- * @buffer: string to tokenize
- * @pattern: delimiter string
- * Return: array of tokens
+ * str_exec - tokenizes a buffer with a delimiter
+ * @buffer: buffer to str_exec
+ * @delimiter: delimiter to str_exec along
+ *
+ * Return: pointer to an array of pointers to the tokens
  */
-char **tokeniser(char **buffer, char *pattern)
+char **str_exec(char *buffer, char *delimiter)
 {
-	int i;
-	char *tok;
-	char **_argv;
-	int cTok;
+	char **tokn = NULL;
+	size_t i = 0, count = 10;
 
-	cTok = _tokount(*buffer, pattern);
-
-	tok = strtok(*buffer, pattern);
-	if (tok == NULL)
-		perror("no command passed: "), exit(0);
-
-	_argv = malloc(sizeof(char *) * (cTok + 1));
-	if (_argv == NULL)
-		perror("Error in Allocation: "), exit(2);
-
-	i = 1, _argv[0] = tok;
-	while (tok != NULL)
+	if (buffer == NULL)
+		return (NULL);
+	tokn = malloc(sizeof(char *) * count);
+	if (tokn == NULL)
 	{
-		tok = strtok(NULL, pattern);
-		if (tok != NULL)
-			_argv[i] = tok, i++;
+		perror("Fatal Error");
+		return (NULL);
 	}
-	_argv[i] = NULL;
-	return (_argv);
-}
-/**
- * exec_process - run program with arguments
- * @program: program string
- * @e_args: program arguments
- * Returns: void
- */
-void exec_process(char *program, char **e_args)
-{
-	pid_t exPid;
-
-	exPid = fork();
-	if (exPid == -1)
-		perror("twas the night before xmas and fork faild"), exit(EXIT_FAILURE);
-	if (exPid == 0)
-		if (execve(program, e_args, NULL) == -1)
-			perror("Error in running program:"), exit(EXIT_FAILURE);
+	while ((tokn[i] = new_strtokn(buffer, delimiter)) != NULL)
+	{
+		i++;
+		if (i == count)
+		{
+			tokn = _realoc(tokn, &count);
+			if (tokn == NULL)
+			{
+				perror("Fatal Error");
+				return (NULL);
+			}
+		}
+		buffer = NULL;
+	}
+	return (tokn);
 }
