@@ -8,14 +8,14 @@
  */
 int _strcmp(char *s1, char *s2)
 {
-    while (*s1 != '\0' && *s2 != '\0')
-    {
-        if (*s1 > *s2 || *s2 > *s1)
-            return (*s1 - *s2);
-        s1++;
-        s2++;
-    }
-    return (0);
+	while (*s1 != '\0' && *s2 != '\0')
+	{
+		if (*s1 > *s2 || *s2 > *s1)
+			return (*s1 - *s2);
+		s1++;
+		s2++;
+	}
+	return (0);
 }
 /**
  * _strcat - concatenates two strings
@@ -27,19 +27,19 @@ int _strcmp(char *s1, char *s2)
  */
 char *_strcat(char *dest, char *src)
 {
-    int i, j;
+	int i, j;
 
-    i = 0;
-    while (dest[i] != '\0')
-        i++;
+	i = 0;
+	while (dest[i] != '\0')
+		i++;
 
-    for (j = 0; src[j] != '\0'; j++, i++)
-    {
-        dest[i] = src[j];
-    }
+	for (j = 0; src[j] != '\0'; j++, i++)
+	{
+		dest[i] = src[j];
+	}
 
-    dest[i] = '\0';
-    return (dest);
+	dest[i] = '\0';
+	return (dest);
 }
 
 /**
@@ -52,16 +52,16 @@ char *_strcat(char *dest, char *src)
  */
 char *_strcpy(char *dest, char *src)
 {
-    int i = 0;
+	int i = 0;
 
-    while (src[i] != '\0')
-    {
-        dest[i] = src[i];
-        i++;
-    }
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
 
-    dest[i] = src[i];
-    return (dest);
+	dest[i] = src[i];
+	return (dest);
 }
 
 /**
@@ -72,12 +72,11 @@ char *_strcpy(char *dest, char *src)
  */
 int _strlen(char *s)
 {
-    int counter = 0;
-    /* initialize a counter for the length */
+	int counter = 0;
 
-    while (s[counter] != 0) /*uses s to create an array for the input*/
-        counter++;          /*counts every element*/
-    return (counter);       /*return end counter8*/
+	while (s[counter] != 0) /*uses s to create an array for the input*/
+		counter++;          /*counts every element*/
+	return (counter);       /*return end counter8*/
 }
 
 /**
@@ -90,19 +89,19 @@ int _strlen(char *s)
  */
 char *_strstr(char *haystack, char *needle)
 {
-    while (*haystack)
-    {
-        char *Begin = haystack;
-        char *pattern = needle;
+	while (*haystack)
+	{
+		char *Begin = haystack;
+		char *pattern = needle;
 
-        while (*haystack && *pattern && *haystack == *pattern)
-        {
-            haystack++;
-            pattern++;
-        }
-        if (!*pattern)
-            return (Begin);
-        haystack = Begin + 1;
-    }
-    return (0);
+		while (*haystack && *pattern && *haystack == *pattern)
+		{
+			haystack++;
+			pattern++;
+		}
+		if (!*pattern)
+			return (Begin);
+		haystack = Begin + 1;
+	}
+	return (0);
 }

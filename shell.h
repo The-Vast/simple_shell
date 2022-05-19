@@ -63,8 +63,8 @@ int _bin_env(char **);
  */
 typedef struct built_ins
 {
-    char *command;
-    int (*func)(char **);
+	char *command;
+	int (*func)(char **);
 } b_ins;
 /*END OF BUILT-IN STUFF*/
 
