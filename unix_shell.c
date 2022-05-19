@@ -32,10 +32,9 @@ int _unix_shell(void)
 	if (start == _NORMAL_)
 		exec_process(pPath ? pPath : t_args[0], t_args), wait(NULL);
 
-		/* free(welcome); */
-		free(buffer);
-		free(t_args);
-		free(pPath);
+	free(buffer);
+	free(t_args);
+	free(pPath);
 
 	return (start);
 }
