@@ -95,7 +95,7 @@ void new_setenv(vars_t *var)
 		add_key(var);
 	else
 	{
-		var = add_value(var->av[1], var->av[2]);
+		va = add_value(var->av[1], var->av[2]);
 		if (var == NULL)
 		{
 			print_error(var, NULL);
